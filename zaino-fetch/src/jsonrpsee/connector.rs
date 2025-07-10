@@ -23,11 +23,11 @@ use crate::jsonrpsee::{
     error::{JsonRpcError, TransportError},
     response::{
         GetBalanceError, GetBalanceResponse, GetBlockCountError, GetBlockCountResponse,
-        GetBlockError, GetBlockResponse, GetBlockchainInfoError, GetBlockchainInfoResponse,
-        GetDifficultyError, GetInfoError, GetInfoResponse, GetSubtreesError, GetSubtreesResponse,
-        GetTransactionError, GetTransactionResponse, GetTreestateError, GetTreestateResponse,
-        GetUtxosError, GetUtxosResponse, SendTransactionError, SendTransactionResponse, TxidsError,
-        TxidsResponse,
+        GetBlockError, GetBlockHash, GetBlockHashError, GetBlockResponse, GetBlockchainInfoError,
+        GetBlockchainInfoResponse, GetDifficultyError, GetInfoError, GetInfoResponse,
+        GetSubtreesError, GetSubtreesResponse, GetTransactionError, GetTransactionResponse,
+        GetTreestateError, GetTreestateResponse, GetUtxosError, GetUtxosResponse,
+        SendTransactionError, SendTransactionResponse, TxidsError, TxidsResponse,
     },
 };
 
@@ -483,6 +483,20 @@ impl JsonRpSeeConnector {
                 .await
                 .map(GetBlockResponse::Object)
         }
+    }
+
+    // TODO REDO !!!
+    /// Returns hash of block in best-block-chain at index provided.
+    /// zcashd reference: [`getblockhash`](https://zcash.github.io/rpc/getblockhash.html)
+    /// method: post
+    /// tags: blockchain
+    ///
+    /// # Notes
+    ///
+    /// The zcashd doc reference above says there are no parameters and the result is a "hex" (string) of the block hash hex encoded.
+    pub async fn get_blockhash(&self) -> Result<GetBlockHash, RpcRequestError<GetBlockHashError>> {
+        self.send_request::<(), GetBlockHash>("getblockhash", ())
+            .await
     }
 
     /// Returns the height of the most recent block in the best valid block chain

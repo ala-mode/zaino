@@ -1089,6 +1089,25 @@ impl ZcashIndexer for StateServiceSubscriber {
         ))
     }
 
+    // TODO : fix
+    // No request parameters.
+    /// Return the hex encoded hash of the best (tip) block, in the longest block chain.
+    async fn get_blockhash(&self) -> Result<GetBlockHash, Self::Error> {
+        // return should be valid hex encoded.
+        // Hash from zebra says:
+        // Return the hash bytes in big-endian byte-order suitable for printing out byte by byte.
+        //
+        // Zebra displays transaction and block hashes in big-endian byte-order,
+        // following the u256 convention set by Bitcoin and zcashd.
+        match self.read_state_service.best_tip() {
+            Some(x) => return Ok(GetBlockHash(x.1)),
+            None => {
+                // try RPC if state read fails:
+                Ok(self.rpc_client.get_blockhash().await?.into())
+            }
+        }
+    }
+
     /// Returns the current block count in the best valid block chain.
     ///
     /// zcashd reference: [`getblockcount`](https://zcash.github.io/rpc/getblockcount.html)
