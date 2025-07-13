@@ -50,6 +50,7 @@ pub trait ZcashIndexerRpc {
     #[method(name = "getblockchaininfo")]
     async fn get_blockchain_info(&self) -> Result<GetBlockChainInfo, ErrorObjectOwned>;
 
+<<<<<<< HEAD
     // TODO Redo
     /// Returns hash of block in best-block-chain at index provided.
     /// zcashd reference: [`getblockhash`](https://zcash.github.io/rpc/getblockhash.html)
@@ -60,7 +61,8 @@ pub trait ZcashIndexerRpc {
     ///
     // TODO wrong:
     /// The zcashd doc reference above says there are no parameters and the result is a "hex" (string) of the block hash hex encoded.
-    #[method(name = "getbestblockhash")]
+    /// The Zcash source code is considered canonical:
+    #[method(name = "getblockhash")]
     async fn get_blockhash(&self) -> Result<GetBlockHash, ErrorObjectOwned>;
 
     /// Returns the proof-of-work difficulty as a multiple of the minimum difficulty.
