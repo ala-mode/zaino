@@ -50,7 +50,6 @@ pub trait ZcashIndexerRpc {
     #[method(name = "getblockchaininfo")]
     async fn get_blockchain_info(&self) -> Result<GetBlockChainInfo, ErrorObjectOwned>;
 
-<<<<<<< HEAD
     // TODO Redo
     /// Returns hash of block in best-block-chain at index provided.
     /// zcashd reference: [`getblockhash`](https://zcash.github.io/rpc/getblockhash.html)
@@ -304,10 +303,10 @@ impl<Indexer: ZcashIndexer + LightWalletIndexer> ZcashIndexerRpcServer for JsonR
             })
     }
 
-    async fn get_best_blockhash(&self) -> Result<GetBlockHash, ErrorObjectOwned> {
+    async fn get_blockhash(&self) -> Result<GetBlockHash, ErrorObjectOwned> {
         self.service_subscriber
             .inner_ref()
-            .get_best_blockhash()
+            .get_blockhash()
             .await
             .map_err(|e| {
                 ErrorObjectOwned::owned(
