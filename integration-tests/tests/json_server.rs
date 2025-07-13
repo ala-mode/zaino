@@ -623,8 +623,8 @@ mod zcashd {
         }
 
         #[tokio::test]
-        async fn get_best_blockhash() {
-            get_best_blockhash_inner().await;
+        async fn get_blockhash() {
+            get_blockhash_inner().await;
         }
 
         #[tokio::test]

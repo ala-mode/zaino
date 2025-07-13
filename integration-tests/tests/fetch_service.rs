@@ -553,7 +553,6 @@ async fn fetch_service_get_block(validator: &ValidatorKind) {
     test_manager.close().await;
 }
 
-<<<<<<< HEAD
 // TODO
 async fn fetch_service_get_blockhash(validator: &ValidatorKind) {
     let (mut test_manager, _fetch_service, fetch_service_subscriber) =
@@ -564,7 +563,8 @@ async fn fetch_service_get_blockhash(validator: &ValidatorKind) {
 
     let inspected_block: GetBlock = fetch_service_subscriber
         // Some(verbosity) : 1 for JSON Object, 2 for tx data as JSON instead of hex
-        .z_get_block("6".to_string(), Some(1))
+        // changed from "6" w/ getbestblockhash
+        .z_get_block("3".to_string(), Some(1))
         .await
         .unwrap();
 
@@ -603,57 +603,6 @@ async fn fetch_service_get_blockhash(validator: &ValidatorKind) {
     test_manager.close().await;
 }
 
-||||||| 99fba87
-=======
-async fn fetch_service_get_best_blockhash(validator: &ValidatorKind) {
-    let (mut test_manager, _fetch_service, fetch_service_subscriber) =
-        create_test_manager_and_fetch_service(validator, None, true, true, true, true).await;
-
-    test_manager.local_net.generate_blocks(5).await.unwrap();
-    tokio::time::sleep(tokio::time::Duration::from_secs(1)).await;
-
-    let inspected_block: GetBlock = fetch_service_subscriber
-        // Some(verbosity) : 1 for JSON Object, 2 for tx data as JSON instead of hex
-        .z_get_block("6".to_string(), Some(1))
-        .await
-        .unwrap();
-
-    let ret: Option<GetBlockHash> = match inspected_block {
-        GetBlock::Object {
-            hash,
-            confirmations: _,
-            size: _,
-            height: _,
-            version: _,
-            merkle_root: _,
-            block_commitments: _,
-            final_sapling_root: _,
-            final_orchard_root: _,
-            tx: _,
-            time: _,
-            nonce: _,
-            solution: _,
-            bits: _,
-            difficulty: _,
-            trees: _,
-            previous_block_hash: _,
-            next_block_hash: _,
-        } => Some(hash),
-        _ => None,
-    };
-
-    let fetch_service_get_best_blockhash: GetBlockHash =
-        dbg!(fetch_service_subscriber.get_best_blockhash().await.unwrap());
-
-    assert_eq!(
-        fetch_service_get_best_blockhash,
-        ret.expect("ret to be Some(GetBlockHash) not None")
-    );
-
-    test_manager.close().await;
-}
-
->>>>>>> 5b219d3
 async fn fetch_service_get_block_count(validator: &ValidatorKind) {
     let (mut test_manager, _fetch_service, fetch_service_subscriber) =
         create_test_manager_and_fetch_service(validator, None, true, true, true, true).await;
@@ -1391,7 +1340,7 @@ mod zcashd {
 
         #[tokio::test]
         pub(crate) async fn best_blockhash() {
-            fetch_service_get_best_blockhash(&ValidatorKind::Zcashd).await;
+            fetch_service_get_blockhash(&ValidatorKind::Zcashd).await;
         }
 
         #[tokio::test]
@@ -1571,7 +1520,7 @@ mod zebrad {
 
         #[tokio::test]
         pub(crate) async fn best_blockhash() {
-            fetch_service_get_best_blockhash(&ValidatorKind::Zebrad).await;
+            fetch_service_get_blockhash(&ValidatorKind::Zebrad).await;
         }
 
         #[tokio::test]
