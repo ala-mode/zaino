@@ -451,6 +451,33 @@ impl From<GetBlockHash> for zebra_rpc::methods::GetBlockHash {
     }
 }
 
+/// Response to a `getmempoolinfo` RPC request.
+///
+/// Also see the notes for the [`Rpc::get_mempool_info`] method.
+// TODO : unclear types
+//pub struct GetBlockHash(#[serde(with = "hex")] pub zebra_chain::block::Hash);
+// TODO : removed Copy from derive. OK?
+#[derive(Clone, Debug, Eq, PartialEq, serde::Deserialize, serde::Serialize)]
+#[serde(transparent)]
+pub struct GetMempoolInfo(String);
+
+impl ResponseToError for GetMempoolInfo {
+    type RpcError = Infallible;
+}
+
+impl Default for GetMempoolInfo {
+    fn default() -> Self {
+        //GetBlockHash(zebra_chain::block::Hash([0; 32]))
+        GetMempoolInfo("placeholder".to_string())
+    }
+}
+
+impl From<String> for GetMempoolInfo {
+    fn from(_value: String) -> Self {
+        GetMempoolInfo("placeholder".to_string())
+    }
+}
+
 /// A wrapper struct for a zebra serialized block.
 ///
 /// Stores bytes that are guaranteed to be deserializable into a [`Block`].

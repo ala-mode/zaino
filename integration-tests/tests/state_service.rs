@@ -1144,7 +1144,7 @@ mod zebrad {
 
         // TODO
         #[tokio::test]
-        async fn best_blockhash() {
+        async fn mempool_info() {
             let (
                 test_manager,
                 _fetch_service,
@@ -1162,9 +1162,9 @@ mod zebrad {
             test_manager.local_net.generate_blocks(2).await.unwrap();
             tokio::time::sleep(std::time::Duration::from_millis(999)).await;
 
-            let fetch_service_bbh = dbg!(fetch_service_subscriber.get_blockhash().await.unwrap());
-            let state_service_bbh = dbg!(state_service_subscriber.get_blockhash().await.unwrap());
-            assert_eq!(fetch_service_bbh, state_service_bbh);
+            let fetch_service_mi = dbg!(fetch_service_subscriber.get_mempool_info().await.unwrap());
+            let state_service_mi = dbg!(state_service_subscriber.get_mempool_info().await.unwrap());
+            assert_eq!(fetch_service_mi, state_service_mi);
         }
 
         #[tokio::test]
@@ -1186,8 +1186,11 @@ mod zebrad {
             test_manager.local_net.generate_blocks(2).await.unwrap();
             tokio::time::sleep(std::time::Duration::from_millis(999)).await;
 
-            let fetch_service_bbh = dbg!(fetch_service_subscriber.get_blockhash().await.unwrap());
-            let state_service_bbh = dbg!(state_service_subscriber.get_blockhash().await.unwrap());
+            // TODO investigate .get_mempool_stream()
+            let fetch_service_bbh =
+                dbg!(fetch_service_subscriber.get_mempool_info().await.unwrap());
+            let state_service_bbh =
+                dbg!(state_service_subscriber.get_mempool_info().await.unwrap());
             assert_eq!(fetch_service_bbh, state_service_bbh);
         }
 

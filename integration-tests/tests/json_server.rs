@@ -239,14 +239,14 @@ async fn launch_json_server_check_info(enable_cookie_auth: bool) {
     test_manager.close().await;
 }
 
-async fn get_blockhash_inner() {
+async fn get_mempool_info_inner() {
     let (mut test_manager, _zcashd_service, zcashd_subscriber, _zaino_service, zaino_subscriber) =
         create_test_manager_and_fetch_services(false, false).await;
 
-    let zcashd_bh = dbg!(zcashd_subscriber.get_blockhash().await.unwrap());
-    let zaino_bh = dbg!(zaino_subscriber.get_blockhash().await.unwrap());
+    let zcashd_mi = dbg!(zcashd_subscriber.get_mempool_info().await.unwrap());
+    let zaino_mi = dbg!(zaino_subscriber.get_mempool_info().await.unwrap());
 
-    assert_eq!(zcashd_bh, zaino_bh);
+    assert_eq!(zcashd_mi, zaino_mi);
 
     test_manager.close().await;
 }

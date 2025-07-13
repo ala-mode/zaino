@@ -553,22 +553,25 @@ async fn fetch_service_get_block(validator: &ValidatorKind) {
     test_manager.close().await;
 }
 
-// TODO
-async fn fetch_service_get_blockhash(validator: &ValidatorKind) {
+// TODO : UPDATE
+async fn fetch_service_get_mempool_info(validator: &ValidatorKind) {
     let (mut test_manager, _fetch_service, fetch_service_subscriber) =
         create_test_manager_and_fetch_service(validator, None, true, true, true, true).await;
 
+    // TODO : unclear how to test this in a controlled way?
     test_manager.local_net.generate_blocks(5).await.unwrap();
     tokio::time::sleep(tokio::time::Duration::from_secs(1)).await;
 
-    let inspected_block: GetBlock = fetch_service_subscriber
+    let _uninspected_block: GetBlock = fetch_service_subscriber
         // Some(verbosity) : 1 for JSON Object, 2 for tx data as JSON instead of hex
         // changed from "6" w/ getbestblockhash
         .z_get_block("3".to_string(), Some(1))
         .await
         .unwrap();
 
-    let ret: Option<GetBlockHash> = match inspected_block {
+    let ret: Option<String> = Some("placeholder_ret".to_string());
+    /*
+        match inspected_block {
         GetBlock::Object {
             hash,
             confirmations: _,
@@ -591,13 +594,15 @@ async fn fetch_service_get_blockhash(validator: &ValidatorKind) {
         } => Some(hash),
         _ => None,
     };
+    */
 
-    let fetch_service_get_blockhash: GetBlockHash =
-        dbg!(fetch_service_subscriber.get_blockhash().await.unwrap());
+    let fetch_service_get_mempoolinfo: String =
+    // TODO checkout this: fetch_service_subscriber.get_mempool_stream as LightWalletIndexer : probably much closer
+        dbg!(fetch_service_subscriber.get_mempool_info().await.unwrap());
 
     assert_eq!(
-        fetch_service_get_blockhash,
-        ret.expect("ret to be Some(GetBlockHash) not None")
+        fetch_service_get_mempoolinfo,
+        ret.expect("ret to be Some(GetMempoolInfo) not None")
     );
 
     test_manager.close().await;

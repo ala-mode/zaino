@@ -333,22 +333,21 @@ impl ZcashIndexer for FetchServiceSubscriber {
             .try_into()?)
     }
 
-    // TODO : REDO
-    /// Returns hash of block in best-block-chain at index provided.
-    /// zcashd reference: [`getblockhash`](https://zcash.github.io/rpc/getblockhash.html)
+    /// Returns details on the active state of the TX memory pool.
+    /// zcashd reference: [`getmempoolinfo`](https://zcash.github.io/rpc/getmempoolinfo.html)
     /// method: post
     /// tags: blockchain
-    /// Return the hex encoded hash of the best (tip) block, in the longest block chain.
     ///
     /// # Parameters
-    ///
     /// No request parameters.
     ///
     /// # Notes
     ///
-    /// Return should be valid hex encoded.
-    async fn get_blockhash(&self) -> Result<GetBlockHash, Self::Error> {
-        Ok(self.fetcher.get_blockhash().await?.into())
+    /// Returns size, bytes, and total memory usage of the mempool
+    // TODO : REDO
+    async fn get_mempool_info(&self) -> Result<String, Self::Error> {
+        Ok("placeholder".to_string())
+        //Ok(self.fetcher.get_blockhash().await?.into())
     }
 
     /// Returns the current block count in the best valid block chain.

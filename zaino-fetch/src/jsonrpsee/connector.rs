@@ -501,10 +501,10 @@ impl JsonRpSeeConnector {
     ///
     /// # Notes
     ///
-    /// The zcashd doc reference above says there are no parameters and the result is a "hex" (string) of the block hash hex encoded.
-    pub async fn get_blockhash(&self) -> Result<GetBlockHash, RpcRequestError<Infallible>> {
-        self.send_request::<(), GetBlockHash>("getblockhash", ())
-            .await
+    /// The zcashd doc reference above shows no parameters.
+    /// and size, bytes, and usage are returned as numeric values within a Result Object
+    pub async fn get_mempool_info(&self) -> Result<String, RpcRequestError<Infallible>> {
+        self.send_request::<(), String>("getmempoolinfo", ()).await
     }
 
     /// Returns the height of the most recent block in the best valid block chain

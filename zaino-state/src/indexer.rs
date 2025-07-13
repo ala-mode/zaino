@@ -16,8 +16,17 @@ use zaino_proto::proto::{
 use zebra_chain::{block::Height, subtree::NoteCommitmentSubtreeIndex};
 use zebra_rpc::methods::{
     trees::{GetSubtrees, GetTreestate},
-    AddressBalance, AddressStrings, GetAddressTxIdsRequest, GetAddressUtxos, GetBlock,
-    GetBlockChainInfo, GetBlockHash, GetInfo, GetRawTransaction, SentTransactionHash,
+    AddressBalance,
+    AddressStrings,
+    GetAddressTxIdsRequest,
+    GetAddressUtxos,
+    GetBlock,
+    GetBlockChainInfo,
+    // TODO : we can GetRawMempool, but did not find `getmempoolinfo` specific type.
+    GetBlockHash,
+    GetInfo,
+    GetRawTransaction,
+    SentTransactionHash,
 };
 
 use crate::{
@@ -254,12 +263,16 @@ pub trait ZcashIndexer: Send + Sync + 'static {
     async fn get_block_count(&self) -> Result<Height, Self::Error>;
 
     /// Returns hash of block in best-block-chain at index provided.
-    /// zcashd reference: [`getblockhash`](https://zcash.github.io/rpc/getblockhash.html)
-    // TODO : REDO
-    /// The zcashd doc reference above says there are no parameters and the result is a "hex" (string) of the block hash hex encoded.
+    /// zcashd reference: [`getmempoolinfo`](https://zcash.github.io/rpc/getmempoolinfo.html)
+    // TODO : expand with zcash src code
+    // TODO : Check this result type...
+    /// The zcashd doc reference above says: Returns details on the active state of the TX memory pool.
+    ///
+    /// # Parameters
+    /// No parameters listed.
     /// method: post
     /// tags: blockchain
-    async fn get_blockhash(&self) -> Result<GetBlockHash, Self::Error>;
+    async fn get_mempool_info(&self) -> Result<String, Self::Error>;
 
     /// Returns all transaction ids in the memory pool, as a JSON array.
     ///
