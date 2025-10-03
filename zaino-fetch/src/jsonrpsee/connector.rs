@@ -26,14 +26,12 @@ use crate::jsonrpsee::{
     error::{JsonRpcError, TransportError},
     response::{
         GetBalanceError, GetBalanceResponse, GetBlockCountResponse, GetBlockError, GetBlockHash,
-        GetBlockResponse, GetBlockchainInfoResponse, GetInfoResponse, GetMempoolInfoResponse,
-        GetSubtreesError, GetSubtreesResponse, GetTransactionResponse, GetTreestateError,
-        GetTreestateResponse, GetUtxosError, GetUtxosResponse, SendTransactionError,
-        SendTransactionResponse, TxidsError, TxidsResponse,
+        GetBlockResponse, GetBlockchainInfoResponse, GetDifficultyResponse, GetInfoResponse,
+        GetMempoolInfoResponse, GetNetworkSolPsResponse, GetSubtreesError, GetSubtreesResponse,
+        GetTransactionResponse, GetTreestateError, GetTreestateResponse, GetUtxosError,
+        GetUtxosResponse, SendTransactionError, SendTransactionResponse, TxidsError, TxidsResponse,
     },
 };
-
-use super::response::{GetDifficultyResponse, GetNetworkSolPsResponse};
 
 #[derive(Serialize, Deserialize, Debug)]
 struct RpcRequest<T> {
